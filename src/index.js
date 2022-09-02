@@ -29,14 +29,12 @@ function clearResults() {
 function searchImage(event) {
   event.preventDefault();
   query = event.currentTarget.searchQuery.value.trim();
- 
   loadMoreButton.classList.add('is-hidden');
-  
+  clearResults();
   if (!query) {
     Notiflix.Notify.info(
           "Hello Dear, You came here to find some image, don't you?:)."
         );
-  clearResults();
     return;
   }
 
@@ -49,8 +47,8 @@ function searchImage(event) {
       }
       else {
         renderGallery(data.hits);
-        //lightbox.refresh();
-        lightbox = new SimpleLightbox('.gallery a').refresh();
+        lightbox.refresh();
+      
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
         if (data.totalHits > perPage) {
           loadMoreButton.classList.remove('is-hidden');
@@ -62,13 +60,10 @@ function searchImage(event) {
 
 function moreImages() {
   page += 1;
-  //lightbox.destroy();
-
 getImages(query, page, perPage)
   .then(({ data }) => {
     renderGallery(data.hits);
-      //lightbox.refresh();
-      lightbox = new SimpleLightbox('.gallery a').refresh();
+      lightbox.refresh();
     const allPages = Math.ceil(data.hits / perPage);
     
       if (page > allPages) {
